@@ -1,0 +1,22 @@
+version: '2'
+services:
+  webfinderapp-app:
+    image: webfinderapp
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://webfinderapp-postgresql:5432/WebFinderApp
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SPRING_DATA_JEST_URI=http://webfinderapp-elasticsearch:9200
+      - SPRING_ELASTICSEARCH_REST_URIS=http://webfinderapp-elasticsearch:9200
+    ports:
+      - 8080:8080
+  webfinderapp-postgresql:
+    extends:
+      file: postgresql.yml
+      service: webfinderapp-postgresql
+  webfinderapp-elasticsearch:
+    extends:
+      file: elasticsearch.yml
+      service: webfinderapp-elasticsearch
